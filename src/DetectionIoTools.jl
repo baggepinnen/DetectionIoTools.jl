@@ -7,7 +7,7 @@ using Serialization
 using Statistics
 
 
-export mapsoundfiles, model2file, save_interesting, save_interesting_concat
+export mapsoundfiles, thing2file, save_interesting, save_interesting_concat
 
 """
     mapsoundfiles(f::F, files, [windowlength]) where F
@@ -40,13 +40,19 @@ function mapsoundfiles(f::F,files) where F
 end
 
 """
-    model2file(model, models, files)
+    thing2file(thing, things, files)
 
-Finds the file corresponding to the model
+Finds the file corresponding to the `thing` amongst `things`. `things` can be a vector or a vector of vectors.
 """
-function model2file(model, models, files)
-    findres = findfirst.(==(model), models)
+function thing2file(thing, things::AbstractVector{<:AbstractVector}, files::AbstractVector)
+    findres = findfirst.(==(thing), things)
     fileno = findfirst(!=(nothing), findres)
+    files[fileno]
+end
+
+function thing2file(thing, things, files::AbstractVector)
+    fileno = findfirst(==(thing), things)
+    fileno === nothing && error("Did not find thing in things")
     files[fileno]
 end
 
