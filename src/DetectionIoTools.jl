@@ -40,17 +40,17 @@ function mapsoundfiles(f::F,files) where F
 end
 
 """
-    thing2file(thing, things, files)
+    thing2file(thing, things [, files])
 
 Finds the file corresponding to the `thing` amongst `things`. `things` can be a vector or a vector of vectors.
 """
-function thing2file(thing, things::AbstractVector{<:AbstractVector}, files::AbstractVector)
+function thing2file(thing, things::AbstractVector{<:AbstractVector}, files::AbstractVector = 1:length(things))
     findres = findfirst.(==(thing), things)
     fileno = findfirst(!=(nothing), findres)
     files[fileno]
 end
 
-function thing2file(thing, things, files::AbstractVector)
+function thing2file(thing, things, files::AbstractVector = 1:length(things))
     fileno = findfirst(==(thing), things)
     fileno === nothing && error("Did not find thing in things")
     files[fileno]
